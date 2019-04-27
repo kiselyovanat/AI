@@ -15,12 +15,12 @@ n2c(a/b)
 §1	**
 
 *** перевод числа в строку ***
-*** n2s(a,q/F1) ***
-***	OQ1 ***
-*** §1	a/q⇒a Z⇒b *n2c(b/c) c@>F1 a↦1
-***	Oi Q1-1⇒j
-*** §3	↑(i≥j)4 ⇔(F1ij) ∆i ∇j →3
-*** §4	**
+n2(a,q/F1) 
+OQ1
+§1	a/q⇒a Z⇒b *n2c(b/c) c@>F1 a↦1
+Oi Q1-1⇒j
+§3	↑(i≥j)4 ⇔(F1ij) ∆i ∇j →3
+§4	**
 
 *** перевод знакового числа в строку
 nsign2s(a/F1)
@@ -191,7 +191,7 @@ setAI(L1,l,m/a) ***l - число строк, m - число столбоцов*
 §4 *monom(s,L2/L2) ↑(s=e)2 *sochz(s/s) →4
 §5 i⇒a  **
 
-begin(L1,m/L2)
+begin(L1,m/L2) ***big done
 m⇒Q2 OL2 ⁻i
 §1 ∆i ↑(i=Q1)3 L1i⇒x
 §2 ↑X1xj L2j∨Ii⇒L2j →2
@@ -204,19 +204,19 @@ Ok @+L3(32) OL3 L2⇒L3 Q2⇒Q3
 §3  ∆k ↑(k=Q3)4 →1
 §4 k⇒r **
 
-notnullcol(L2,k/i)
+notnullcol(L2,k/i) ***big done
 k-1⇒j Ox 32⇒i
 §1 ∆j ↑(j=Q2)2 L2j∨x⇒x →1
 §2 x ↪3  x!⇒i
 §3 **
 
-upperone(L2,k,i/j)
+upperone(L2,k,i/j) ***big done
 Ii⇒x k-1⇒l
 §1 ∆l ↑(l=Q2)3 L2l&x ↪1
 §2 l⇒j
 §3 **
 
-downxor(L2,i,j/L2)
+downxor(L2,i,j/L2) ***big done
 j⇒k Ii⇒x
 §1 ∆k ↑(k=Q2)2 L2k&x ↪1 L2j⊕L2k⇒L2k →1
 §2 **
@@ -245,3 +245,8 @@ OQ1
    Q1-1⇒b
 §2 ↑(z≥b)3 ⇔(F1zb) ∆z ∇b →2
 §3 **
+
+getvector(d,F1,b,l/v)
+@+F2(100) @'\n'>F2 Op
+§1 *freadf(d,F1,b,l/k)↑(F1p=F2.0)2 ∆b ∆Q1⇒p →1
+§2 *input2(F1/v) **
