@@ -19,10 +19,10 @@ printbigmat(m,e,L1/)
 	Oi @+F2(32)
 §1 ↑(i≥Q1)4 Oj
 §2 ↑(j=e)3
-				j+i⇒k
-        *output2(L1k,m/F2) /F2>C
-				OQ2
-				∆j →2
+			j+i⇒k
+			*output2(L1k,m/F2) /F2>C
+			OQ2
+			∆j →2
 §3 /'\n'>C i+e⇒i →1
 §4 **
 
@@ -63,3 +63,8 @@ i/31⇒m i;31↪2 ∆m
                                   ***OQ1 *n2(y,10/F1) /'y = '>C /F1>C /'\n'>C
 §5  j+e⇒j →3
 §6  **
+
+swap(L2,k,j,e/L2)
+k*e⇒i k+e⇒l j*e⇒s
+§1 ↑(i=l)2 ⇔(L2is) ∆s ∆i →1
+§2 **
