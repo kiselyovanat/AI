@@ -7,7 +7,7 @@ head(/)
 §2 *fclose(d/)  *printmat(k,L2/)
 OQ3 /'****************\n'>C
 §3  *beginBig(L2,k,e/L3) /'****************\n'>C Op OL4 L3⇒L4 Q3⇒Q4 ***printmat(32,L4/)
-§4 *swap(L4,0,5,e/L4) *printbigmat(32,e,L4/)
+§4 *swap(L4,3,5,e/L4) *printbigmat(32,e,L4/)
 **
 
 beginBig(L1,k,e/L2) *** k - число столбцов(=число строк в матрице после транспонирования),e - число строк, которое занимает число
@@ -26,6 +26,6 @@ OL2 ⁻i
 §3 **
 
 swap(L2,k,j,e/L2)
-k*e⇒i k+e⇒l j*e⇒s
+k*e⇒i+e⇒l j*e⇒s
 §1 ↑(i=l)2 ⇔(L2is) ∆s ∆i →1
 §2 **
