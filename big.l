@@ -8,6 +8,13 @@ k⇒Q2 OL2 Q1⇒m ↑(m>32)1 *begin(L1,m/L2) →5 ***m - число строк(=
 §4 *printbigmat(32,e,L2/)
 §5 **
 
+rankBig(L2,n/r) ***n - количество строк(больших) в матрице
+Ok @+L3(1000) OL3 L2⇒L3 Q2⇒Q3 ⁻a
+§1 *notnullcolBig(L3,k,e/i) ↑(i=a)4 *upperoneBig(L3,k,i,e/j) ↑(k=j)2 *swap(L3,k,j,e/L3)
+§2 *downxorbig(L3,i,k,e/L3)
+§3  ∆k ↑(k=n)4 →1
+§4 k⇒r *printbigmat(32,e,L3/) **
+
 transpositionBig(L1,k,e/L2) ***e-число строк, которое занимает число, k-число столбцов
 k*e-1⇒Q2
 OL2 ⁻i

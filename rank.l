@@ -59,7 +59,17 @@ notnullcolBig(L2,k,e/h) ***k - номер строки, с которой нач
 §5 ∆l →1
 §6 **
 
+monom(s,L2/L2)
+s⇒k ⁻x
+§1 ↑X2kj L2j&x⇒x →1  *** в j - номер младшей единицы ***
+§2 x@>L2 **
 
+monomBig(s,e,L2/L2)
+s⇒k ⁻x @+L3(Q2) Oi
+§1 ↑X3kj j*e⇒j Ol
+§2 ↑(l=e)1 j+l⇒p L2p&x⇒L3l ∆l →2
+§3 ↑(i=Q3)4 L3i@>L2 →3
+§4 **
 
 upperoneBig(L2,k,i,e/y)
 @+F1(1000) k*e⇒j
