@@ -1,21 +1,36 @@
 head(/)
 
-@+F1(100) @+L2(10000) @+L3(10000) @+L4(100000)
-0⇒r 3⇒a *n2s(a/F1) 6⇒k 2⇒e 64⇒n ⁻i
+@+F1(100) @+L2(1000000) @+L3(1000000) @+L4(1000000)
+0⇒r 3⇒a *n2s(a/F1) 7⇒k 4⇒e 128⇒n ⁻i
 *fopen(F1,r/d) 0⇒b⇒Q1 1⇒l
-§1 ∆i ↑(i=n)2 *getvector(d,F1,b,l/v) v@>L2 →1
-§2 *fclose(d/)  *printmat(k,L2/)
-OQ3 /'****************\n'>C
-§3  *beginBig(L2,k,e/L3) 1⇒i /'****************\n'>C  *printbigmat(32,e,L3/)/'****************\n'>C
-§4 *rankBig(L3,e/r) OQ1 *n2s(r/F1) /'rank = '>C /F1>C /'\n'>C
-   ∆i Ii-1⇒u k-i⇒q u<q⇒s OQ1 *n2s(s/F1) /'s= '>C /F1>C /'\n'>C
-§5  *monomBig(s,e,L3/L3)/'****************\n'>C  ***Q3⇒v *n2s(v/F1) /'Q3= '>C /F1>C /'\n'>C *printbigmat(32,e,L3/)
-     ↑(s=u)6 *sochz(s/s) OQ1 output2(s,k/F1) /'s = '>C /F1>C /'\n'>C →5
-§6 **
+§1 ∆i ↑(i=n)2
+          *getvector(d,F1,b,l/v) v@>L2 →1
+§2 *fclose(d/)
+    OQ3
+§3  *beginBig(L2,k,e/L3) 1⇒i *** c-число больших строк в матрице
+§4  Q3/e⇒c OQ1 ***
+ *n2s(c/F1) /'c = '>C /F1>C /'\n'>C
+     ↑(c>n)7
+      *rankBig(L3,e/r)
+§5    ↑(r<c)7
+          ↑(i=k)7 ∆i Ii-1⇒u k-i⇒q u<q⇒s  *** u - последнее сочетание, s - начальное
+        ***
+        OQ1 *n2s(k/F1) /'k = '>C /F1>C /'\n'>C
+        ***
+          OQ1 *n2s(i/F1) /'i = '>C /F1>C /'\n'>C
+        ***
+          OQ1 *n2s(q/F1) /'q = '>C /F1>C /'\n'>C
+        ***
+          OQ1 *output2(s,k/F1) /'s = '>C /F1>C /'\n'>C
+        ***
+          OQ1 *output2(u,k/F1) /'u = '>C /F1>C /'\n'>C
+§6        *monomBig(s,e,L3/L3)  ↑(s=u)4 *sochz(s/s) OQ1 *output2(s,k/F1) /'s = '>C /F1>C /'\n'>C →6
+§7 i⇒a OQ1 *n2s(a/F1) /'AI = '>C /F1>C /'\n'>C **
 
 
-beginBig(L1,k,e/L2) *** k - число столбцов(=число строк в матрице после транспонирования),e - число строк, которое занимает число
-***k⇒Q2 OL2 Q1⇒m ↑(m>32)1 *begin(L1,m/L2) →5 ***m - число строк(=число столбцов в матрице после транспонирования)
+
+beginBig(L1,k,e/L2) 				*** k - число столбцов(=число строк в матрице после транспонирования), e - число строк, которое занимает число
+						***m - число строк(=число столбцов в матрице после транспонирования)
 §1 ⁻i
 §2 *transpositionBig(L1,k,e/L2) ⁻j
 §3 ∆i ↑(i=e)4 j@>L2 →3
@@ -29,16 +44,16 @@ OL2 ⁻i
 §2 ↑X1mj j*e⇒j i:32+j⇒j Z⇒q L2j∨Iq⇒L2j →2  ***в Z - остаток от деления i 32
 §3 **
 
-rankBig(L2,e/r) ***e - количество строк,
-Ok @+L3(1000) OL3 L2⇒L3 Q2⇒Q3 ⁻a Q2/e⇒n
+rankBig(L2,e/r) ***e-число строк, которое занимает число
+@+F1(100) Ok @+L3(1000000) OL3 L2⇒L3 Q2⇒Q3/e⇒n ⁻a OQ1 *n2s(n/F1) /'n= '>C /F1>C /'\n'>C  ***n-число больших строк в матрице
 §1 *notnullcolBig(L3,k,e/i) ↑(i=a)4 *upperoneBig(L3,k,i,e/j) ↑(k=j)2 *swap(L3,k,j,e/L3)
 §2 *downxorbig(L3,i,k,e/L3)
 §3 ∆k ↑(k=n)4 →1
-§4 k⇒r *printbigmat(32,e,L3/) **
+§4 k⇒r *printbigmat(32,e,L3/)  OQ1 *n2s(r/F1) /'rank = '>C /F1>C /'\n'>C **
 
-notnullcolBig(L2,k,e/h) ***k - номер строки, с которой начинаем поиск ненулевого столбца,
+notnullcolBig(L2,k,e/h) 	 ***k - номер строки, с которой начинаем поиск ненулевого столбца,
 @+F1(100)                        ***e - количество строк, которое занимает число
-  ⁻h Ol    Oi         ***OQ1 *n2s(Q2/F1) /'Q2 = '>C /F1>C /'\n'>C
+⁻h Ol Oi         ***OQ1 *n2s(Q2/F1) /'Q2 = '>C /F1>C /'\n'>C
 §1 ↑(l=e)6  Ox k*e⇒j
 §2 ↑(j≥Q2)4
         j+l⇒r         ***OQ1 *n2s(r/F1) /'r = '>C /F1>C /'\n'>C
@@ -55,12 +70,11 @@ notnullcolBig(L2,k,e/h) ***k - номер строки, с которой нач
 §6 **
 
 sochz(s/s)
-***/'sochz '>C
 §1 s+1&s⇒b-1⊕s%-2⇒c
    s+1⊕s<1+1<c⊕b⇒s
 §2 **
 
-monomBig(s,e,L2/L2)
+monomBig(s,e,L2/L2)		***s-сочетание, e - число строк, которое занимает число
 s⇒k @+L3(e) e⇒Q3 Oi Oq
 §1 ↑(i=Q3)2 ⁻L3i ∆i→1
 §2 ↑X4kj j*e⇒j Ol
@@ -68,7 +82,7 @@ s⇒k @+L3(e) e⇒Q3 Oi Oq
 §4 ↑(q=Q3)5 L3q@>L2 ∆q →4
 §5 **
 
-upperoneBig(L2,k,i,e/y)
+upperoneBig(L2,k,i,e/y)		*** k - номер строки, с которой начинаем поиск, i-номер ненулевого столбца
 @+F1(1000) k*e⇒j
 i>5⇒m i&31⇒b
 ***i/31⇒m i;31↪2 ∆m
