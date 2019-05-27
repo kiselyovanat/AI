@@ -1,0 +1,53 @@
+genRandom:
+  xor eax,eax
+  mov [ebp+36],eax
+.P1:
+  mov eax,[ebp+36]
+  mov edx,eax
+  mov eax,[ebp+56]
+  cmp edx,eax
+  je .P2
+  push dword [_addrbim]
+  sub esp,1416
+  mov edx,esp
+  push ebp
+  mov eax,[ebp+52]
+  mov [edx+52],eax
+  mov ebp,edx
+  call randomv
+  pop ebp
+  mov edx,esp
+  add esp,1416
+  pop dword [_addrbim]
+  mov eax,[edx+4]
+  mov [ebp+4],eax
+  mov eax,[ebp+4]
+  mov ebx,[ebp+1020]
+  shl ebx,2
+  mov ecx,[ebp+1020]
+  shl ecx,2
+  cmp ecx,[ebp+620]
+  jae _errend
+  mov edi,ecx
+  add edi,[ebp+220]
+  mov esi,edi
+  sub esi,4
+  sub ecx,ebx
+  std
+  rep movsb
+  add ebx,[ebp+220]
+  mov [ebx],eax
+  inc dword [ebp+1020]
+  mov eax,[ebp+36]
+  inc eax
+  mov [ebp+36],eax
+  jmp .P1
+.P2:
+  mov eax,[ebp+64]
+  mov eax,[ebp+72]
+  mov eax,[ebp+36]
+  mov eax,[ebp+56]
+  mov eax,[ebp+80]
+  mov eax,[ebp+52]
+  mov eax,[ebp+4]
+  mov eax,[ebp+80]
