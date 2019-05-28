@@ -1,8 +1,8 @@
 #!/bin/bash
 ./ltc test.l
-for i in {1..5}
+for i in {1..20}
 do
-	echo "3 11 11" | ./ogrf
-	./test >>setBig
+	echo "3 10 8" | ./ogrf
+	./test >> comp108ogrf
 	sleep 2
 done

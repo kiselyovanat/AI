@@ -1,53 +1,214 @@
-genRandom:
+rankBig:
+  mov byte[ebp+121],1
+  mov ebx,[_addrbim]
+  mov [ebp+220],ebx
+  mov [ebp+620],dword 100*4
+  add [_addrbim],dword 100
+  mov [ebp+1020],dword 0
+  call _addmem
   xor eax,eax
-  mov [ebp+36],eax
+  mov [ebp+44],eax
+  mov byte[ebp+123],0
+  mov ebx,[_addrbim]
+  mov [ebp+228],ebx
+  mov [ebp+628],dword 1000000*4
+  add [_addrbim],dword 4000000
+  mov [ebp+1028],dword 0
+  call _addmem
+  mov ecx, [ebp+1028]
+  mov edi, [ebp+228]
+  xor eax, eax
+  cld
+  rep stosd
+  mov ecx,[ebp+1024]
+  mov [ebp+112],ecx
+  mov edi, ebp
+  mov esi,[ebp+224]
+.M1:
+  mov eax,[esi]
+  mov [edi - 64],eax
+  times 4 inc esi
+  times 4 dec edi
+  loop .M1
+  mov ecx,[ebp+112]
+  mov [ebp+1020+2*4],ecx
+  shl ecx, 2
+  cmp [ebp+620+2*4],ecx
+  jb _errend
+  shr ecx, 2
+  mov esi,ebp
+  sub esi, 64
+  mov edi,[ebp+220+2*4]
+.M2:
+  cmp ecx, 0
+  jz .M3
+  dec ecx
+  mov edx, [esi]
+  mov [edi], edx
+  times 4 dec esi
+  times 4 inc edi
+  jmp .M2
+.M3:
+  mov eax,[ebp+1024]
+  mov [ebp+1028],eax
+  xor edx,edx
+  mov ebx,[ebp+20]
+  div ebx
+  mov [ebp+108],edx
+  mov [ebp+56],eax
+  mov eax,0xffffffff
+  mov [ebp+4],eax
 .P1:
+  push dword [_addrbim]
+  sub esp,1416
+  mov edx,esp
+  push ebp
+  mov al,[ebp+123]
+  mov [edx+122],al
+  mov eax,[ebp+228]
+  mov [edx+224],eax
+  mov eax,[ebp+628]
+  mov [edx+624],eax
+  mov eax,[ebp+1028]
+  mov [edx+1024],eax
+  mov eax,[ebp+44]
+  mov [edx+44],eax
+  mov eax,[ebp+20]
+  mov [edx+20],eax
+  mov ebp,edx
+  call notnullcolBig
+  pop ebp
+  mov edx,esp
+  add esp,1416
+  pop dword [_addrbim]
+  mov eax,[edx+32]
+  mov [ebp+36],eax
   mov eax,[ebp+36]
   mov edx,eax
-  mov eax,[ebp+56]
+  mov eax,[ebp+4]
+  cmp edx,eax
+  je .P4
+  push dword [_addrbim]
+  sub esp,1416
+  mov edx,esp
+  push ebp
+  mov al,[ebp+123]
+  mov [edx+122],al
+  mov eax,[ebp+228]
+  mov [edx+224],eax
+  mov eax,[ebp+628]
+  mov [edx+624],eax
+  mov eax,[ebp+1028]
+  mov [edx+1024],eax
+  mov eax,[ebp+44]
+  mov [edx+44],eax
+  mov eax,[ebp+36]
+  mov [edx+36],eax
+  mov eax,[ebp+20]
+  mov [edx+20],eax
+  mov ebp,edx
+  call upperoneBig
+  pop ebp
+  mov edx,esp
+  add esp,1416
+  pop dword [_addrbim]
+  mov eax,[edx+100]
+  mov [ebp+40],eax
+  mov eax,[ebp+44]
+  mov edx,eax
+  mov eax,[ebp+40]
   cmp edx,eax
   je .P2
   push dword [_addrbim]
   sub esp,1416
   mov edx,esp
   push ebp
-  mov eax,[ebp+52]
-  mov [edx+52],eax
+  mov al,[ebp+123]
+  mov [edx+122],al
+  mov eax,[ebp+228]
+  mov [edx+224],eax
+  mov eax,[ebp+628]
+  mov [edx+624],eax
+  mov eax,[ebp+1028]
+  mov [edx+1024],eax
+  mov eax,[ebp+44]
+  mov [edx+44],eax
+  mov eax,[ebp+40]
+  mov [edx+40],eax
+  mov eax,[ebp+20]
+  mov [edx+20],eax
+  mov al,[ebp+123]
+  mov [edx+122],al
+  mov eax,[ebp+228]
+  mov [edx+224],eax
+  mov eax,[ebp+628]
+  mov [edx+624],eax
+  mov eax,[ebp+1028]
+  mov [edx+1024],eax
   mov ebp,edx
-  call randomv
+  call swap
   pop ebp
   mov edx,esp
   add esp,1416
   pop dword [_addrbim]
-  mov eax,[edx+4]
-  mov [ebp+4],eax
-  mov eax,[ebp+4]
-  mov ebx,[ebp+1020]
-  shl ebx,2
-  mov ecx,[ebp+1020]
-  shl ecx,2
-  cmp ecx,[ebp+620]
-  jae _errend
-  mov edi,ecx
-  add edi,[ebp+220]
-  mov esi,edi
-  sub esi,4
-  sub ecx,ebx
-  std
-  rep movsb
-  add ebx,[ebp+220]
-  mov [ebx],eax
-  inc dword [ebp+1020]
-  mov eax,[ebp+36]
-  inc eax
-  mov [ebp+36],eax
-  jmp .P1
+  mov eax,[edx+1024]
+  mov [ebp+1028],eax
 .P2:
+  push dword [_addrbim]
+  sub esp,1416
+  mov edx,esp
+  push ebp
+  mov al,[ebp+123]
+  mov [edx+122],al
+  mov eax,[ebp+228]
+  mov [edx+224],eax
+  mov eax,[ebp+628]
+  mov [edx+624],eax
+  mov eax,[ebp+1028]
+  mov [edx+1024],eax
+  mov eax,[ebp+36]
+  mov [edx+36],eax
+  mov eax,[ebp+44]
+  mov [edx+40],eax
+  mov eax,[ebp+20]
+  mov [edx+52],eax
+  mov al,[ebp+123]
+  mov [edx+122],al
+  mov eax,[ebp+228]
+  mov [edx+224],eax
+  mov eax,[ebp+628]
+  mov [edx+624],eax
+  mov eax,[ebp+1028]
+  mov [edx+1024],eax
+  mov ebp,edx
+  call downxorbig
+  pop ebp
+  mov edx,esp
+  add esp,1416
+  pop dword [_addrbim]
+  mov eax,[edx+1024]
+  mov [ebp+1028],eax
+.P3:
+  mov eax,[ebp+44]
+  inc eax
+  mov [ebp+44],eax
+  mov eax,[ebp+44]
+  mov edx,eax
+  mov eax,[ebp+56]
+  cmp edx,eax
+  je .P4
+  jmp .P1
+.P4:
+  mov eax,[ebp+44]
+  mov [ebp+72],eax
   mov eax,[ebp+64]
   mov eax,[ebp+72]
   mov eax,[ebp+36]
   mov eax,[ebp+56]
   mov eax,[ebp+80]
+  mov eax,[ebp+8]
+  mov eax,[ebp+36]
+  mov eax,[ebp+28]
   mov eax,[ebp+52]
   mov eax,[ebp+4]
   mov eax,[ebp+80]

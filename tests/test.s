@@ -62,11 +62,9 @@ head:
   mov [ebp+1020],eax
   mov eax,0xffffffff
   mov [ebp+36],eax
-  mov eax,12
+  mov eax,8
   mov [ebp+44],eax
-  mov ebx,[ebp+44]
-  and ebx,0x1f
-  mov eax,[_I+ebx*4]
+  mov eax,5
   mov [ebp+56],eax
   push dword [_addrbim]
   sub esp,1416
@@ -95,13 +93,17 @@ head:
   mov [ebp+1020],eax
   mov eax,1
   mov [ebp+48],eax
+  mov ebx,[ebp+44]
+  and ebx,0x1f
+  mov eax,[_I+ebx*4]
+  mov [ebp+52],eax
 .P1:
   mov eax,[ebp+36]
   inc eax
   mov [ebp+36],eax
   mov eax,[ebp+36]
   mov edx,eax
-  mov eax,[ebp+56]
+  mov eax,[ebp+52]
   cmp edx,eax
   je .P2
   push dword [_addrbim]
@@ -175,6 +177,8 @@ head:
   mov eax,[ebp+1024]
   mov [edx+1024],eax
   mov eax,[ebp+44]
+  mov [edx+52],eax
+  mov eax,[ebp+56]
   mov [edx+44],eax
   mov ebp,edx
   call componentAI
@@ -412,17 +416,15 @@ componentAI:
   mov byte[ebp+123],0
   mov ebx,[_addrbim]
   mov [ebp+228],ebx
-  mov [ebp+628],dword 10000000*4
-  add [_addrbim],dword 40000000
+  mov [ebp+628],dword 100000*4
+  add [_addrbim],dword 400000
   mov [ebp+1028],dword 0
   call _addmem
   xor eax,eax
   mov [ebp+36],eax
   xor eax,eax
   mov [ebp+1028],eax
-  mov eax,[ebp+44]
-  mov [ebp+52],eax
-  mov ebx,[ebp+44]
+  mov ebx,[ebp+52]
   and ebx,0x1f
   mov eax,[_I+ebx*4]
   mov [ebp+56],eax
@@ -463,7 +465,7 @@ componentAI:
   mov [edx+620],eax
   mov eax,[ebp+1028]
   mov [edx+1020],eax
-  mov eax,[ebp+44]
+  mov eax,[ebp+52]
   mov [edx+56],eax
   mov ebp,edx
   call aif
@@ -475,7 +477,7 @@ componentAI:
   mov [ebp+4],eax
   mov eax,[ebp+4]
   mov [ebp+76],eax
-  mov ebx,[ebp+52]
+  mov ebx,[ebp+44]
   and ebx,0x1f
   mov eax,[_I+ebx*4]
   mov [ebp+100],eax
@@ -540,7 +542,7 @@ componentAI:
   mov [edx+620],eax
   mov eax,[ebp+1028]
   mov [edx+1020],eax
-  mov eax,[ebp+44]
+  mov eax,[ebp+52]
   mov [edx+56],eax
   mov ebp,edx
   call aif
@@ -560,45 +562,6 @@ componentAI:
   jmp .P5
 .P6:
 .P7:
-  mov eax,4
-  mov ebx,1
-  mov ecx,_M4
-  mov edx,_LM4
-  int 0x80
-  xor eax,eax
-  mov [ebp+1020],eax
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov eax,[ebp+76]
-  mov [edx+104],eax
-  mov al,[ebp+121]
-  mov [edx+121],al
-  mov eax,[ebp+220]
-  mov [edx+220],eax
-  mov eax,[ebp+620]
-  mov [edx+620],eax
-  mov eax,[ebp+1020]
-  mov [edx+1020],eax
-  mov ebp,edx
-  call n2s
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+1020]
-  mov [ebp+1020],eax
-  mov eax,4
-  mov ebx,1
-  mov ecx,[ebp+220]
-  mov edx,[ebp+1020]
-  int 0x80
-  mov eax,4
-  mov ebx,1
-  mov ecx,_M5
-  mov edx,_LM5
-  int 0x80
   ret
 freadf:
   mov eax,3
@@ -948,13 +911,6 @@ setAIBig:
   mov [ebp+628],dword 1000000*4
   add [_addrbim],dword 4000000
   mov [ebp+1028],dword 0
-  call _addmem
-  mov byte[ebp+124],0
-  mov ebx,[_addrbim]
-  mov [ebp+232],ebx
-  mov [ebp+632],dword 1000000*4
-  add [_addrbim],dword 4000000
-  mov [ebp+1032],dword 0
   call _addmem
   mov eax,[ebp+12]
   mov [ebp+44],eax
@@ -2011,7 +1967,3 @@ _M2: db  '',10,''
 _LM2 equ $-_M2
 _M3: db '',10,''
 _LM3 equ $-_M3
-_M4: db  'Компонентная АИ = '
-_LM4 equ $-_M4
-_M5: db  '',10,''
-_LM5 equ $-_M5
