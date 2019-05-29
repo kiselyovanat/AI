@@ -62,9 +62,11 @@ head:
   mov [ebp+1020],eax
   mov eax,0xffffffff
   mov [ebp+36],eax
-  mov eax,8
+  mov eax,9
   mov [ebp+44],eax
-  mov eax,5
+  mov ebx,[ebp+44]
+  and ebx,0x1f
+  mov eax,[_I+ebx*4]
   mov [ebp+56],eax
   push dword [_addrbim]
   sub esp,1416
@@ -163,6 +165,12 @@ head:
   mov edx,esp
   add esp,1416
   pop dword [_addrbim]
+  mov eax,13
+  mov ebx,0
+  int 0x80
+  mov [ebp+80],eax
+  xor eax,eax
+  mov [ebp+72],eax
 .P3:
   push dword [_addrbim]
   sub esp,1416
@@ -177,56 +185,23 @@ head:
   mov eax,[ebp+1024]
   mov [edx+1024],eax
   mov eax,[ebp+44]
-  mov [edx+52],eax
+  mov [edx+12],eax
   mov eax,[ebp+56]
-  mov [edx+44],eax
+  mov [edx+16],eax
   mov ebp,edx
-  call componentAI
+  call setAIBig
   pop ebp
   mov edx,esp
   add esp,1416
   pop dword [_addrbim]
-  mov eax,[edx+76]
+  mov eax,[edx+4]
   mov [ebp+76],eax
-  xor eax,eax
-  mov [ebp+1020],eax
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov eax,[ebp+76]
-  mov [edx+104],eax
-  mov al,[ebp+121]
-  mov [edx+121],al
-  mov eax,[ebp+220]
-  mov [edx+220],eax
-  mov eax,[ebp+620]
-  mov [edx+620],eax
-  mov eax,[ebp+1020]
-  mov [edx+1020],eax
-  mov ebp,edx
-  call n2s
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+1020]
-  mov [ebp+1020],eax
-  mov eax,4
-  mov ebx,1
-  mov ecx,_M1
-  mov edx,_LM1
+.P4:
+  mov eax,13
+  mov ebx,0
   int 0x80
-  mov eax,4
-  mov ebx,1
-  mov ecx,[ebp+220]
-  mov edx,[ebp+1020]
-  int 0x80
-  mov eax,4
-  mov ebx,1
-  mov ecx,_M2
-  mov edx,_LM2
-  int 0x80
+  sub eax,[ebp+80]
+  mov [ebp+80],eax
   ret
 n2s:
   xor eax,eax
@@ -317,15 +292,15 @@ getvector:
   add [_addrbim],dword 12
   mov [ebp+1024],dword 0
   call _addmem
-  add [ebp+1024],dword _LM3
+  add [ebp+1024],dword _LM1
   mov ebx,[ebp+624]
   cmp [ebp+1024],ebx
   ja _errend
-  mov ecx,_LM3
-  mov esi,_M3
+  mov ecx,_LM1
+  mov esi,_M1
   mov edi,[ebp+224]
   add edi,[ebp+1024]
-  sub edi,_LM3
+  sub edi,_LM1
   cld
   rep movsb
   xor eax,eax
@@ -404,498 +379,6 @@ fclose:
   mov eax,6
   mov ebx,[ebp+56]
   int 80h
-  ret
-componentAI:
-  mov byte[ebp+121],1
-  mov ebx,[_addrbim]
-  mov [ebp+220],ebx
-  mov [ebp+620],dword 100*4
-  add [_addrbim],dword 100
-  mov [ebp+1020],dword 0
-  call _addmem
-  mov byte[ebp+123],0
-  mov ebx,[_addrbim]
-  mov [ebp+228],ebx
-  mov [ebp+628],dword 100000*4
-  add [_addrbim],dword 400000
-  mov [ebp+1028],dword 0
-  call _addmem
-  xor eax,eax
-  mov [ebp+36],eax
-  xor eax,eax
-  mov [ebp+1028],eax
-  mov ebx,[ebp+52]
-  and ebx,0x1f
-  mov eax,[_I+ebx*4]
-  mov [ebp+56],eax
-.P3:
-  mov eax,[ebp+36]
-  mov edx,eax
-  mov eax,[ebp+56]
-  cmp edx,eax
-  je .P4
-  mov ebx,[ebp+36]
-  shl ebx,byte 2
-  add ebx,[ebp+224]
-  mov eax,[ebx]
-  and eax,1
-  mov ebx,[ebp+36]
-  shl ebx,byte 2
-  add ebx,[ebp+228]
-  mov [ebx],eax
-  mov eax,[ebp+1028]
-  inc eax
-  mov [ebp+1028],eax
-  mov eax,[ebp+36]
-  inc eax
-  mov [ebp+36],eax
-  jmp .P3
-.P4:
-  xor eax,eax
-  mov [ebp+1020],eax
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov al,[ebp+123]
-  mov [edx+121],al
-  mov eax,[ebp+228]
-  mov [edx+220],eax
-  mov eax,[ebp+628]
-  mov [edx+620],eax
-  mov eax,[ebp+1028]
-  mov [edx+1020],eax
-  mov eax,[ebp+52]
-  mov [edx+56],eax
-  mov ebp,edx
-  call aif
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+4]
-  mov [ebp+4],eax
-  mov eax,[ebp+4]
-  mov [ebp+76],eax
-  mov ebx,[ebp+44]
-  and ebx,0x1f
-  mov eax,[_I+ebx*4]
-  mov [ebp+100],eax
-  mov eax,1
-  mov [ebp+40],eax
-.P5:
-  mov eax,[ebp+40]
-  inc eax
-  mov [ebp+40],eax
-  mov eax,[ebp+40]
-  mov edx,eax
-  mov eax,[ebp+100]
-  cmp edx,eax
-  ja .P6
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov al,[ebp+123]
-  mov [edx+121],al
-  mov eax,[ebp+228]
-  mov [edx+220],eax
-  mov eax,[ebp+628]
-  mov [edx+620],eax
-  mov eax,[ebp+1028]
-  mov [edx+1020],eax
-  mov eax,[ebp+40]
-  mov [edx+36],eax
-  mov al,[ebp+122]
-  mov [edx+122],al
-  mov eax,[ebp+224]
-  mov [edx+224],eax
-  mov eax,[ebp+624]
-  mov [edx+624],eax
-  mov eax,[ebp+1024]
-  mov [edx+1024],eax
-  mov al,[ebp+123]
-  mov [edx+121],al
-  mov eax,[ebp+228]
-  mov [edx+220],eax
-  mov eax,[ebp+628]
-  mov [edx+620],eax
-  mov eax,[ebp+1028]
-  mov [edx+1020],eax
-  mov ebp,edx
-  call getcomp
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+1020]
-  mov [ebp+1028],eax
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov al,[ebp+123]
-  mov [edx+121],al
-  mov eax,[ebp+228]
-  mov [edx+220],eax
-  mov eax,[ebp+628]
-  mov [edx+620],eax
-  mov eax,[ebp+1028]
-  mov [edx+1020],eax
-  mov eax,[ebp+52]
-  mov [edx+56],eax
-  mov ebp,edx
-  call aif
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+4]
-  mov [ebp+4],eax
-  mov eax,[ebp+4]
-  mov edx,eax
-  mov eax,[ebp+76]
-  cmp edx,eax
-  jae .P5
-  mov eax,[ebp+4]
-  mov [ebp+76],eax
-  jmp .P5
-.P6:
-.P7:
-  ret
-freadf:
-  mov eax,3
-  mov ebx,[ebp+56]
-  mov ecx,[ebp+220]
-  add ecx,[ebp+8]
-  mov edx,[ebp+48]
-  int 80h
-  mov [ebp+44],eax
-  ret
-input2:
-  xor eax,eax
-  mov [ebp+4],eax
-  mov eax,0xffffffff
-  mov [ebp+36],eax
-.P1:
-  mov eax,[ebp+36]
-  inc eax
-  mov [ebp+36],eax
-  xor eax,[ebp+1020]
-  and eax,eax
-  jz .P3
-  mov ebx,[ebp+36]
-  add ebx,[ebp+220]
-  mov ebx,[ebx]
-  and ebx,0x000000ff
-  mov eax,ebx
-  xor eax,48
-  and eax,eax
-  jz .P1
-  mov ebx,[ebp+36]
-  and ebx,0x1f
-  mov eax,[_I+ebx*4]
-  or eax,[ebp+4]
-  mov [ebp+4],eax
-  jmp .P1
-.P3:
-  ret
-aif:
-  mov eax,1
-  mov [ebp+52],eax
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov al,[ebp+121]
-  mov [edx+121],al
-  mov eax,[ebp+220]
-  mov [edx+220],eax
-  mov eax,[ebp+620]
-  mov [edx+620],eax
-  mov eax,[ebp+1020]
-  mov [edx+1020],eax
-  mov eax,[ebp+52]
-  mov [edx+52],eax
-  mov eax,[ebp+56]
-  mov [edx+56],eax
-  mov ebp,edx
-  call basicAIBig
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+4]
-  mov [ebp+4],eax
-  ret
-getcomp:
-  mov byte[ebp+124],1
-  mov ebx,[_addrbim]
-  mov [ebp+232],ebx
-  mov [ebp+632],dword 100*4
-  add [_addrbim],dword 100
-  mov [ebp+1032],dword 0
-  call _addmem
-  xor eax,eax
-  mov [ebp+1032],eax
-.P1:
-  mov eax,[ebp+36]
-  sub eax,1
-  mov [ebp+96],eax
-  mov eax,[ebp+96]
-  shr eax,byte 1
-  mov [ebp+100],eax
-  mov eax,[ebp+96]
-  xor eax,[ebp+100]
-  mov [ebp+8],eax
-  mov eax,[ebp+36]
-  shr eax,byte 1
-  mov [ebp+100],eax
-  mov eax,[ebp+36]
-  xor eax,[ebp+100]
-  mov [ebp+12],eax
-  mov eax,[ebp+8]
-  xor eax,[ebp+12]
-  mov [ebp+52],eax
-.P2:
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov al,[ebp+121]
-  mov [edx+121],al
-  mov eax,[ebp+220]
-  mov [edx+220],eax
-  mov eax,[ebp+620]
-  mov [edx+620],eax
-  mov eax,[ebp+1020]
-  mov [edx+1020],eax
-  mov al,[ebp+122]
-  mov [edx+122],al
-  mov eax,[ebp+224]
-  mov [edx+224],eax
-  mov eax,[ebp+624]
-  mov [edx+624],eax
-  mov eax,[ebp+1024]
-  mov [edx+1024],eax
-  mov eax,[ebp+52]
-  mov [edx+52],eax
-  mov al,[ebp+121]
-  mov [edx+121],al
-  mov eax,[ebp+220]
-  mov [edx+220],eax
-  mov eax,[ebp+620]
-  mov [edx+620],eax
-  mov eax,[ebp+1020]
-  mov [edx+1020],eax
-  mov ebp,edx
-  call comp
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+1020]
-  mov [ebp+1020],eax
-  ret
-basicAIBig:
-  mov byte[ebp+122],0
-  mov ebx,[_addrbim]
-  mov [ebp+224],ebx
-  mov [ebp+624],dword 1000000*4
-  add [_addrbim],dword 4000000
-  mov [ebp+1024],dword 0
-  call _addmem
-  mov byte[ebp+123],1
-  mov ebx,[_addrbim]
-  mov [ebp+228],ebx
-  mov [ebp+628],dword 100*4
-  add [_addrbim],dword 100
-  mov [ebp+1028],dword 0
-  call _addmem
-.P1:
-  mov eax,0xffffffff
-  mov [ebp+4],eax
-  mov eax,[ebp+52]
-  mov edx,eax
-  mov eax,[ebp+56]
-  cmp edx,eax
-  ja .P5
-  mov eax,0xffffffff
-  mov [ebp+100],eax
-  mov eax,0xffffffff
-  mov [ebp+36],eax
-  mov ebx,[ebp+52]
-  and ebx,0x1f
-  mov eax,[_I+ebx*4]
-  mov [ebp+28],eax
-.P2:
-  mov eax,[ebp+100]
-  inc eax
-  mov [ebp+100],eax
-  mov eax,[ebp+100]
-  mov edx,eax
-  mov eax,[ebp+28]
-  cmp edx,eax
-  je .P6
-  xor eax,eax
-  mov [ebp+1024],eax
-.P3:
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov eax,[ebp+100]
-  mov [edx+100],eax
-  mov al,[ebp+121]
-  mov [edx+121],al
-  mov eax,[ebp+220]
-  mov [edx+220],eax
-  mov eax,[ebp+620]
-  mov [edx+620],eax
-  mov eax,[ebp+1020]
-  mov [edx+1020],eax
-  mov al,[ebp+122]
-  mov [edx+122],al
-  mov eax,[ebp+224]
-  mov [edx+224],eax
-  mov eax,[ebp+624]
-  mov [edx+624],eax
-  mov eax,[ebp+1024]
-  mov [edx+1024],eax
-  mov ebp,edx
-  call preimage
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+1024]
-  mov [ebp+1024],eax
-  mov eax,[ebp+1024]
-  mov edx,eax
-  mov eax, 0
-  cmp edx,eax
-  jne .P4
-  jmp .P5
-.P4:
-  push dword [_addrbim]
-  sub esp,1416
-  mov edx,esp
-  push ebp
-  mov al,[ebp+122]
-  mov [edx+122],al
-  mov eax,[ebp+224]
-  mov [edx+224],eax
-  mov eax,[ebp+624]
-  mov [edx+624],eax
-  mov eax,[ebp+1024]
-  mov [edx+1024],eax
-  mov eax,[ebp+56]
-  mov [edx+12],eax
-  mov eax,[ebp+1024]
-  mov [edx+16],eax
-  mov ebp,edx
-  call setAIBig
-  pop ebp
-  mov edx,esp
-  add esp,1416
-  pop dword [_addrbim]
-  mov eax,[edx+4]
-  mov [ebp+8],eax
-  mov eax,[ebp+8]
-  mov edx,eax
-  mov eax,[ebp+4]
-  cmp edx,eax
-  jae .P2
-  mov eax,[ebp+8]
-  mov [ebp+4],eax
-  jmp .P2
-.P5:
-  xor eax,eax
-  mov [ebp+4],eax
-.P6:
-  ret
-comp:
-  mov eax,0xffffffff
-  mov [ebp+40],eax
-  mov byte[ebp+123],1
-  mov ebx,[_addrbim]
-  mov [ebp+228],ebx
-  mov [ebp+628],dword 100*4
-  add [_addrbim],dword 100
-  mov [ebp+1028],dword 0
-  call _addmem
-.P1:
-  mov eax,[ebp+40]
-  inc eax
-  mov [ebp+40],eax
-  mov eax,[ebp+40]
-  mov edx,eax
-  mov eax,[ebp+1024]
-  cmp edx,eax
-  je .P3
-.P2:
-  mov ebx,[ebp+40]
-  shl ebx,byte 2
-  add ebx,[ebp+224]
-  mov eax,[ebx]
-  and eax,[ebp+52]
-  mov [ebp+96],eax
-  mov eax,[ebp+96]
-  mov edx,eax
-  mov eax, 0
-  cmp edx,eax
-  je .P1
-  mov eax,1
-  mov ebx,[ebp+40]
-  shl ebx,byte 2
-  add ebx,[ebp+220]
-  xor eax,[ebx]
-  mov ebx,[ebp+40]
-  shl ebx,byte 2
-  add ebx,[ebp+220]
-  mov [ebx],eax
-  jmp .P1
-.P3:
-  ret
-preimage:
-  mov eax,0xffffffff
-  mov [ebp+36],eax
-.P1:
-  mov eax,[ebp+36]
-  inc eax
-  mov [ebp+36],eax
-  mov eax,[ebp+36]
-  mov edx,eax
-  mov eax,[ebp+1020]
-  cmp edx,eax
-  je .P2
-  mov ebx,[ebp+36]
-  shl ebx,byte 2
-  add ebx,[ebp+220]
-  mov eax,[ebx]
-  mov edx,eax
-  mov eax,[ebp+100]
-  cmp edx,eax
-  jne .P1
-  mov eax,[ebp+36]
-  mov ebx,[ebp+1024]
-  shl ebx,2
-  mov ecx,[ebp+1024]
-  shl ecx,2
-  cmp ecx,[ebp+624]
-  jae _errend
-  mov edi,ecx
-  add edi,[ebp+224]
-  mov esi,edi
-  sub esi,4
-  sub ecx,ebx
-  std
-  rep movsb
-  add ebx,[ebp+224]
-  mov [ebx],eax
-  inc dword [ebp+1024]
-  jmp .P1
-.P2:
   ret
 setAIBig:
   mov byte[ebp+121],1
@@ -992,7 +475,7 @@ setAIBig:
   mov edx,eax
   mov eax,[ebp+56]
   cmp edx,eax
-  ja .P7
+  ja .P8
   push dword [_addrbim]
   sub esp,1416
   mov edx,esp
@@ -1020,7 +503,7 @@ setAIBig:
   mov edx,eax
   mov eax,[ebp+12]
   cmp edx,eax
-  jb .P7
+  jb .P8
   mov eax,[ebp+36]
   mov edx,eax
   mov eax,[ebp+44]
@@ -1095,8 +578,56 @@ setAIBig:
   mov [ebp+76],eax
   jmp .P6
 .P7:
+  mov eax,0xffffffff
+  mov [ebp+36],eax
+  mov [ebp+4],eax
+  mov eax,4
+  mov ebx,1
+  mov ecx,_M2
+  mov edx,_LM2
+  int 0x80
+  jmp .P9
+.P8:
   mov eax,[ebp+36]
   mov [ebp+4],eax
+.P9:
+  ret
+freadf:
+  mov eax,3
+  mov ebx,[ebp+56]
+  mov ecx,[ebp+220]
+  add ecx,[ebp+8]
+  mov edx,[ebp+48]
+  int 80h
+  mov [ebp+44],eax
+  ret
+input2:
+  xor eax,eax
+  mov [ebp+4],eax
+  mov eax,0xffffffff
+  mov [ebp+36],eax
+.P1:
+  mov eax,[ebp+36]
+  inc eax
+  mov [ebp+36],eax
+  xor eax,[ebp+1020]
+  and eax,eax
+  jz .P3
+  mov ebx,[ebp+36]
+  add ebx,[ebp+220]
+  mov ebx,[ebx]
+  and ebx,0x000000ff
+  mov eax,ebx
+  xor eax,48
+  and eax,eax
+  jz .P1
+  mov ebx,[ebp+36]
+  and ebx,0x1f
+  mov eax,[_I+ebx*4]
+  or eax,[ebp+4]
+  mov [ebp+4],eax
+  jmp .P1
+.P3:
   ret
 beginBig:
 .P1:
@@ -1961,9 +1492,7 @@ _I:
   dd 0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000
 ErrMsg: db '[INTERNAL_ERROR]',10,''
 LenErrMsg equ $-ErrMsg
-_M1: db  'AI = '
+_M1: db '',10,''
 _LM1 equ $-_M1
-_M2: db  '',10,''
+_M2: db  'error! annihilator does not exist',10,''
 _LM2 equ $-_M2
-_M3: db '',10,''
-_LM3 equ $-_M3
